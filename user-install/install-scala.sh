@@ -18,14 +18,14 @@ function install_scala_binaries {
     local symlink=scala-${major}
   fi
        
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
   local Software="${SOFTWARE:=/mnt/omv/Software}"
 
   [[ ! -d "${DOWNLOADS}" ]] && mkdir -p "${DOWNLOADS}"
   [[ ! -d $tools ]] && mkdir -p $tools
 
   local archive=""
-  if [[ -f ${Software}/Linux/${file} ]] ;then
+  if [[ -f "${Software}"/Linux/${file} ]] ;then
     local archive=${Software}/Linux/${file}
   elif [[ -f "${DOWNLOADS}"/${file} ]] ;then
     local archive="${DOWNLOADS}"/${file}
@@ -35,13 +35,13 @@ function install_scala_binaries {
     wget "$url" -O "${archive}"
   fi
 
-  if [ ! -d ${tools}/${folder} ] ;then
-    tar -C ${tools} -xpf ${archive}
+  if [ ! -d "${tools}"/${folder} ] ;then
+    tar -C "${tools}" -xpf ${archive}
   fi
   
   if [ ! -z ${symlink} ] ;then
-    if [ -L ${tools}/${symlink} ] ;then rm ${tools}/${symlink} ;fi
-    ln -s ${folder} ${tools}/${symlink}
+    if [ -L "${tools}"/${symlink} ] ;then rm "${tools}"/${symlink} ;fi
+    ln -s ${folder} "${tools}"/${symlink}
   fi
 }
 
@@ -60,14 +60,14 @@ function install_scala_api {
   local folder=scala-${version}
   local symlink=scala-${major}
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
   local Software="${SOFTWARE:=/mnt/omv/Software}"
 
   [[ ! -d "${DOWNLOADS}" ]] && mkdir -p "${DOWNLOADS}"
   [[ ! -d $tools ]] && mkdir -p $tools
 
   local archive=""
-  if [[ -f ${Software}/Linux/${file} ]] ;then
+  if [[ -f "${Software}"/Linux/${file} ]] ;then
     local archive=${Software}/Linux/${file}
   elif [[ -f "${DOWNLOADS}"/${file} ]] ;then
     local archive="${DOWNLOADS}"/${file}
@@ -77,12 +77,12 @@ function install_scala_api {
     wget "$url" -O "${archive}"
   fi
 
-  if [ ! -d ${tools}/${folder}/api ] ;then
-    tar -C ${tools} -xpf ${archive}
+  if [ ! -d "${tools}"/${folder}/api ] ;then
+    tar -C "${tools}" -xpf ${archive}
   fi
   
-  if [ -L ${tools}/${symlink} ] ;then rm ${tools}/${symlink} ;fi
-  ln -s ${folder} ${tools}/${symlink}
+  if [ -L "${tools}"/${symlink} ] ;then rm "${tools}"/${symlink} ;fi
+  ln -s ${folder} "${tools}"/${symlink}
 }
 
 function install_scala_spec {
@@ -100,18 +100,18 @@ function install_scala_spec {
   local folder=scala-${version}
   local symlink=scala-${major}
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
   local Software="${SOFTWARE:=/mnt/omv/Software}"
 
   [[ ! -d "${DOWNLOADS}" ]] && mkdir -p "${DOWNLOADS}"
   [[ ! -d $tools ]] && mkdir -p $tools
 
-  [[ ! -d ${tools}/${folder}/spec ]] && mkdir -p ${tools}/${folder}/spec
-  [[ ! -f ${tools}/${folder}/spec/index.html ]] \
-    && httrack -O ${tools}/${folder}/spec http://www.scala-lang.org/files/archive/spec/${major}
+  [[ ! -d "${tools}"/${folder}/spec ]] && mkdir -p "${tools}"/${folder}/spec
+  [[ ! -f "${tools}"/${folder}/spec/index.html ]] \
+    && httrack -O "${tools}"/${folder}/spec http://www.scala-lang.org/files/archive/spec/${major}
 
-  if [ -L ${tools}/${symlink} ] ;then rm ${tools}/${symlink} ;fi
-  ln -s ${folder} ${tools}/${symlink}
+  if [ -L "${tools}"/${symlink} ] ;then rm "${tools}"/${symlink} ;fi
+  ln -s ${folder} "${tools}"/${symlink}
 }
 
 function install_scala {

@@ -40,10 +40,10 @@ function install_java_binaries {
   local Software="${SOFTWARE:=/mnt/omv/Software}"
 
   [[ ! -d "${DOWNLOADS}" ]] && mkdir -p "${DOWNLOADS}"
-  [[ ! -d ${tools} ]] && mkdir -p ${tools}
+  [[ ! -d "${tools}" ]] && mkdir -p "${tools}"
   
   local archive=""
-  if [[ -f ${Software}/Linux/${file} ]] ;then
+  if [[ -f "${Software}"/Linux/${file} ]] ;then
     local archive=${Software}/Linux/${file}
   elif [[ -f "${DOWNLOADS}"/${file} ]] ;then
     local archive="${DOWNLOADS}"/${file}
@@ -53,12 +53,12 @@ function install_java_binaries {
     wget "$url" -O "${archive}"
   fi
 
-  if [ ! -d ${tools}/${folder} ] ;then
-    tar -C ${tools} -xpf ${archive}
+  if [ ! -d "${tools}"/${folder} ] ;then
+    tar -C "${tools}" -xpf ${archive}
   fi
   if [ ! -z ${symlink} ] ;then
-    if [ -L ${tools}/${symlink} ] ;then rm ${tools}/${symlink} ;fi
-    ln -s ${folder} ${tools}/${symlink}
+    if [ -L "${tools}"/${symlink} ] ;then rm "${tools}"/${symlink} ;fi
+    ln -s ${folder} "${tools}"/${symlink}
   fi
 }
 

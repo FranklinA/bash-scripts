@@ -15,7 +15,7 @@ function install_go_binaries {
     && wget https://dl.google.com/go/${archive}
   popd
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
 
   [[ ! -d $tools ]] && mkdir -p $tools
   pushd $tools \

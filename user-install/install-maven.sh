@@ -11,7 +11,7 @@ function install_maven_binaries {
     && wget http://www.mirrorservice.org/sites/ftp.apache.org/maven/maven-3/${version}/binaries/apache-maven-${version}-bin.tar.gz
   popd
   
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
 
   [[ ! -d $tools ]] && mkdir -p $tools
   pushd $tools \

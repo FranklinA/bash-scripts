@@ -11,7 +11,7 @@ function install_zeppelin_binaries {
     && wget http://www-eu.apache.org/dist/zeppelin/zeppelin-${version}/zeppelin-${version}-bin-all.tgz
   popd
   
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
 
   [[ ! -d $tools ]] && mkdir -p $tools
   pushd $tools \

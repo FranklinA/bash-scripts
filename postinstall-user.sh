@@ -134,15 +134,15 @@ function postinstall_user_firefox {
     popd 2>&1 > /dev/null
   fi
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
-  [[ ! -d ${tools}        ]] && mkdir -p ${tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
+  [[ ! -d "${tools}"        ]] && mkdir -p "${tools}"
 
-  pushd ${tools} 2>&1 > /dev/null
+  pushd "${tools}" 2>&1 > /dev/null
   tar xpf "${DOWNLOADS}"/${app}-${version}.tar.bz2
   popd 2>&1 > /dev/null
 
   [[ ! -d ~/bin ]] && mkdir -p ~/bin
-  ln -s ${tools}/${app}/${app} ~/bin/${app}
+  ln -s "${tools}"/${app}/${app} ~/bin/${app}
   echo ~/bin/${app}
 }
 
@@ -159,15 +159,15 @@ function postinstall_user_thunderbird {
     popd 2>&1 > /dev/null
   fi
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
-  [[ ! -d ${tools}        ]] && mkdir -p ${tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
+  [[ ! -d "${tools}"        ]] && mkdir -p "${tools}"
 
-  pushd ${tools} 2>&1 > /dev/null
+  pushd "${tools}" 2>&1 > /dev/null
   tar xpf "${DOWNLOADS}"/${app}-${version}.tar.bz2
   popd 2>&1 > /dev/null
 
   [[ ! -d ~/bin ]] && mkdir -p ~/bin
-  ln -s ${tools}/${app}/${app} ~/bin/${app}
+  ln -s "${tools}"/${app}/${app} ~/bin/${app}
   echo ~/bin/${app}
 }
 

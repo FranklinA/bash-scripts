@@ -11,7 +11,7 @@ function install_solr_binaries {
     && wget http://archive.apache.org/dist/lucene/solr/${version}/solr-${version}.tgz
   popd
   
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
 
   [[ ! -d $tools ]] && mkdir -p $tools
   pushd $tools \

@@ -10,14 +10,14 @@ function install_sbt_binaries {
   local folder=sbt-${version}
   local symlink=sbt
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
   local Software="${SOFTWARE:=/mnt/omv/Software}"
 
   [[ ! -d "${DOWNLOADS}" ]] && mkdir -p "${DOWNLOADS}"
   [[ ! -d $tools ]] && mkdir -p $tools
 
   local archive=""
-  if [[ -f ${Software}/Linux/${file} ]] ;then
+  if [[ -f "${Software}"/Linux/${file} ]] ;then
     local archive=${Software}/Linux/${file}
   elif [[ -f "${DOWNLOADS}"/${file} ]] ;then
     local archive="${DOWNLOADS}"/${file}
@@ -27,13 +27,13 @@ function install_sbt_binaries {
     wget "$url" -O "${archive}"
   fi
 
-  if [ ! -d ${tools}/${folder} ] ;then
-    mkdir -p ${tools}/${folder}
-    tar -C ${tools}/${folder} --strip-components 1 -xpf ${archive}
+  if [ ! -d "${tools}"/${folder} ] ;then
+    mkdir -p "${tools}"/${folder}
+    tar -C "${tools}"/${folder} --strip-components 1 -xpf ${archive}
   fi
   if [ ! -z ${symlink} ] ;then
-    if [ -L ${tools}/${symlink} ] ;then rm ${tools}/${symlink} ;fi
-    ln -s ${folder} ${tools}/${symlink}
+    if [ -L "${tools}"/${symlink} ] ;then rm "${tools}"/${symlink} ;fi
+    ln -s ${folder} "${tools}"/${symlink}
   fi
 }
 

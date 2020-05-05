@@ -19,7 +19,7 @@ function install_glassfish_binaries {
   # Install GlassFish and OSGi features
   #
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
 
   [[ ! -d $tools ]] && mkdir -p $tools
 

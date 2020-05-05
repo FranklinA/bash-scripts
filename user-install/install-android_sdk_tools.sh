@@ -23,10 +23,10 @@ function install_android_sdk_tools_binaries {
   
   popd > /dev/null
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
-  local folder=${tools}/sdk-tools-${OSPLATFORM}-${release}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
+  local folder="${tools}"/sdk-tools-${OSPLATFORM}-${release}
 
-  [[ ! -d ${tools} ]] && mkdir -p ${tools}
+  [[ ! -d "${tools}" ]] && mkdir -p "${tools}"
   
   if [ ! -d ${folder} ] ;then
     mkdir -p ${folder}
