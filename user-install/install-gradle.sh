@@ -12,12 +12,12 @@ function install_gradle_binaries {
   [[ ! -f gradle-${version}-bin.zip ]] && wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip
   popd > /dev/null
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
 
-  [[ ! -d ${tools} ]] && mkdir -p ${tools}
+  [[ ! -d "${tools}" ]] && mkdir -p "${tools}"
   
-  if [ ! -d ${tools}/gradle-${version} ] ;then
-    pushd ${tools} > /dev/null
+  if [ ! -d "${tools}"/gradle-${version} ] ;then
+    pushd "${tools}" > /dev/null
     unzip "${DOWNLOADS}"/gradle-${version}-bin.zip
     popd > /dev/null
   fi

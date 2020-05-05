@@ -11,7 +11,7 @@ function install_slack_binaries {
   [[ ! -d "${DOWNLOADS}" ]] && mkdir -p "${DOWNLOADS}"
 
   local archive=""
-  if [[ -f ${Software}/Linux/Debian/${file} ]] ;then
+  if [[ -f "${Software}"/Linux/Debian/${file} ]] ;then
     local archive=${Software}/Linux/Debian/${file}
   elif [[ -f "${DOWNLOADS}"/${file} ]] ;then
     local archive="${DOWNLOADS}"/${file}

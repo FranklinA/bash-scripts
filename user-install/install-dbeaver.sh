@@ -10,14 +10,14 @@ function install_dbeaver_binaries {
   local folder=dbeaver
   local symlink=
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
   local Software="${SOFTWARE:=/mnt/omv/Software}"
 
   [[ ! -d "${DOWNLOADS}" ]] && mkdir -p "${DOWNLOADS}"
   [[ ! -d $tools ]] && mkdir -p $tools
 
   local archive=""
-  if [[ -f ${Software}/Linux/${file} ]] ;then
+  if [[ -f "${Software}"/Linux/${file} ]] ;then
     local archive=${Software}/Linux/${file}
   elif [[ -f "${DOWNLOADS}"/${file} ]] ;then
     local archive="${DOWNLOADS}"/${file}
@@ -27,20 +27,21 @@ function install_dbeaver_binaries {
     wget "$url" -O "${archive}"
   fi
 
-  if [ ! -d ${tools}/${folder} ] ;then
-    mkdir -p ${tools}/${folder}
-    tar -C ${tools}/${folder} --strip-components 1 -xpf ${archive}
+  if [ ! -d "${tools}"/${folder} ] ;then
+    mkdir -p "${tools}"/${folder}
+    tar -C "${tools}"/${folder} --strip-components 1 -xpf ${archive}
   fi
   if [ ! -z ${symlink} ] ;then
-    if [ -L ${tools}/${symlink} ] ;then rm ${tools}/${symlink} ;fi
-    ln -s ${folder} ${tools}/${symlink}
+    if [ -L "${tools}"/${symlink} ] ;then rm "${tools}"/${symlink} ;fi
+    ln -s ${folder} "${tools}"/${symlink}
   fi
   
   [[ ! -d ~/.bashrc-scripts/installed ]] && mkdir -p ~/.bashrc-scripts/installed
   cat << EOD > ~/.bashrc-scripts/installed/380-dbeaver.sh
 #!/bin/bash
 
-export PATH=${tools}/${folder}:\${PATH}
+export DBEAVER_HOME=\${TOOLS_HOME:=\$HOME/tools}/${folder}
+export PATH=\${DBEAVER_HOME}:\${PATH}
 EOD
 }
 

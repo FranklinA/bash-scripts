@@ -21,7 +21,7 @@ function install_karaf_binaries {
 
   _info Installing Apache Karaf
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
 
   [[ ! -d $tools ]] && mkdir -p $tools
 

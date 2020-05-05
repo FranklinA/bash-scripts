@@ -16,19 +16,19 @@ function install_dwhelper_binaries {
         ;;
   esac
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
   local Software="${SOFTWARE:=/mnt/omv/Software}"
   
   local file=net.downloadhelper.coapp-${version}_${arch}.tar.gz
   local url=https://github.com/mi-g/vdhcoapp/releases/download/v${semver}/${file}
-  local folder=${tools}/net.downloadhelper.coapp-${semver}
+  local folder="${tools}"/net.downloadhelper.coapp-${semver}
   local symlink=${HOME}/net.downloadhelper.coapp-${semver}
 
   [[ ! -d "${DOWNLOADS}" ]] && mkdir -p "${DOWNLOADS}"
   [[ ! -d $tools ]] && mkdir -p $tools
 
   local archive=""
-  if [[ -f ${Software}/Linux/${file} ]] ;then
+  if [[ -f "${Software}"/Linux/${file} ]] ;then
     local archive=${Software}/Linux/${file}
   elif [[ -f "${DOWNLOADS}"/${file} ]] ;then
     local archive="${DOWNLOADS}"/${file}
@@ -43,8 +43,8 @@ function install_dwhelper_binaries {
     tar -C ${folder} --strip-components 1 -xpf ${archive}
   fi
   if [ ! -z ${symlink} ] ;then
-    if [ -L ${tools}/${symlink} ] ;then rm ${tools}/${symlink} ;fi
-    ln -s ${folder} ${tools}/${symlink}
+    if [ -L "${tools}"/${symlink} ] ;then rm "${tools}"/${symlink} ;fi
+    ln -s ${folder} "${tools}"/${symlink}
     ${symlink}/bin/net.downloadhelper.coapp-linux-64 install --user
   fi
 }

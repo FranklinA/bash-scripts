@@ -6,7 +6,7 @@ function install_mongo_binaries {
   local MONGO_ARCH=${MONGO_ARCH:-"linux-x86_64"}
   local MONGO_OS=${MONGO_OS:-"debian81"}
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
 
   [[ ! -d $tools ]] && mkdir -p $tools
 

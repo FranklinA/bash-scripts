@@ -17,11 +17,11 @@ function install_kafka_binaries {
 
   popd > /dev/null
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
-  [[ ! -d ${tools} ]] && mkdir -p ${tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
+  [[ ! -d "${tools}" ]] && mkdir -p "${tools}"
   
-  if [ ! -d ${tools}/${product} ] ;then
-    pushd ${tools} > /dev/null
+  if [ ! -d "${tools}"/${product} ] ;then
+    pushd "${tools}" > /dev/null
     [[ -e sbt ]] && rm -r -f sbt
     tar -xf "${DOWNLOADS}"/${archive}
     popd > /dev/null

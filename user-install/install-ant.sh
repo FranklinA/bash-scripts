@@ -11,7 +11,7 @@ function install_ant_binaries {
     && wget https://www-eu.apache.org/dist/ant/binaries/apache-ant-${version}-bin.tar.gz
   popd
   
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
 
   [[ ! -d $tools ]] && mkdir -p $tools
   pushd $tools \

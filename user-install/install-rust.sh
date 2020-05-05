@@ -8,7 +8,7 @@ function install_rust_binaries {
   else
     local command="install ${version}"
   fi
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
   [[ ! -d $tools ]] && mkdir -p $tools
   [[ ! -d $tools/cargo ]] && mkdir -p $tools/cargo
   [[ ! -L ~/.cargo ]] && ln -s $tools/cargo ~/.cargo

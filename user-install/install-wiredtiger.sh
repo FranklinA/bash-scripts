@@ -18,12 +18,12 @@ function install_wiredtiger_binaries {
     git pull
   fi
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
-  [[ ! -d ${tools} ]] && mkdir -p ${tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
+  [[ ! -d "${tools}" ]] && mkdir -p "${tools}"
 
   cd "${WORKSPACE}"/wiredtiger
   ./autogen.sh
-  ./configure --enable-java --prefix=${tools}/wiredtiger
+  ./configure --enable-java --prefix="${tools}"/wiredtiger
 
   make
   make install
@@ -31,7 +31,7 @@ function install_wiredtiger_binaries {
   popd
 
   mkdir -p ~/bin > /dev/null 2>&1
-  ln -s ${tools}/wiredtiger/bin/wt ~/bin/wt
+  ln -s "${tools}"/wiredtiger/bin/wt ~/bin/wt
 
   echo $HOME/bin/wt
 }

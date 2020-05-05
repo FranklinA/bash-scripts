@@ -12,12 +12,12 @@ function install_groovy_binaries {
   [[ ! -f apache-groovy-sdk-${version}.zip ]] && wget https://dl.bintray.com/groovy/maven/apache-groovy-sdk-${version}.zip
   popd > /dev/null
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
 
-  [[ ! -d ${tools} ]] && mkdir -p ${tools}
+  [[ ! -d "${tools}" ]] && mkdir -p "${tools}"
   
-  if [ ! -d ${tools}/groovy-${version} ] ;then
-    pushd ${tools} > /dev/null
+  if [ ! -d "${tools}"/groovy-${version} ] ;then
+    pushd "${tools}" > /dev/null
     unzip "${DOWNLOADS}"/apache-groovy-sdk-${version}.zip
     popd > /dev/null
   fi

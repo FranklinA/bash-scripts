@@ -14,12 +14,12 @@ function install_spark_binaries {
     wget https://www-eu.apache.org/dist/spark/spark-${spark_version}/spark-${spark_version}-bin-hadoop${hadoop_version}.tgz
   popd > /dev/null
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
 
-  [[ ! -d ${tools} ]] && mkdir -p ${tools}
+  [[ ! -d "${tools}" ]] && mkdir -p "${tools}"
   
-  if [ ! -d ${tools}/spark-${spark_version}-bin-hadoop${hadoop_version} ] ;then
-    pushd ${tools} > /dev/null
+  if [ ! -d "${tools}"/spark-${spark_version}-bin-hadoop${hadoop_version} ] ;then
+    pushd "${tools}" > /dev/null
     tar -xf "${DOWNLOADS}"/spark-${spark_version}-bin-hadoop${hadoop_version}.tgz
     popd > /dev/null
   fi

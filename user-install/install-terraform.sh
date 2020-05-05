@@ -12,14 +12,14 @@ function install_terraform_binaries {
   local folder=terraform-${version}
   local symlink=terraform
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
   local Software="${SOFTWARE:=/mnt/omv/Software}"
 
   [[ ! -d "${DOWNLOADS}" ]] && mkdir -p "${DOWNLOADS}"
   [[ ! -d $tools ]] && mkdir -p $tools
 
   local archive=""
-  if [[ -f ${Software}/Linux/${file} ]] ;then
+  if [[ -f "${Software}"/Linux/${file} ]] ;then
     local archive=${Software}/Linux/${file}
   elif [[ -f "${DOWNLOADS}"/${file} ]] ;then
     local archive="${DOWNLOADS}"/${file}
@@ -29,13 +29,13 @@ function install_terraform_binaries {
     wget "$url" -O "${archive}"
   fi
 
-  if [ ! -d ${tools}/${folder} ] ;then
-    mkdir -p ${tools}/${folder}
-    unzip -d ${tools}/${folder} ${archive}
+  if [ ! -d "${tools}"/${folder} ] ;then
+    mkdir -p "${tools}"/${folder}
+    unzip -d "${tools}"/${folder} ${archive}
   fi
   if [ ! -z ${symlink} ] ;then
-    if [ -L ${tools}/${symlink} ] ;then rm ${tools}/${symlink} ;fi
-    ln -s ${folder} ${tools}/${symlink}
+    if [ -L "${tools}"/${symlink} ] ;then rm "${tools}"/${symlink} ;fi
+    ln -s ${folder} "${tools}"/${symlink}
   fi
 
   [[ ! -d ~/.bashrc-scripts/installed ]] && mkdir -p ~/.bashrc-scripts/installed

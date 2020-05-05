@@ -16,12 +16,12 @@ function install_kubectl_binaries {
         ;;
   esac
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
 
-  [[ ! -d ${tools} ]] && mkdir -p ${tools}
+  [[ ! -d "${tools}" ]] && mkdir -p "${tools}"
   
-  if [ ! -d ${tools}/kube-${version} ] ;then
-    pushd ${tools} > /dev/null
+  if [ ! -d "${tools}"/kube-${version} ] ;then
+    pushd "${tools}" > /dev/null
     [[ -e kube ]] && rm -r -f kube
     mkdir -p kube-${version}/bin
     pushd kube-${version}/bin > /dev/null
@@ -57,10 +57,10 @@ function install_kubectl_plugins {
         ;;
   esac
 
-  local tools=${TOOLS_HOME:=$HOME/tools}
+  local tools="${TOOLS_HOME:=$HOME/tools}"
 
-  [[ ! -d ${tools}/kube-${version}/bin ]] && mkdir -p ${tools}/kube-${version}/bin
-  pushd ${tools}/kube-${version}/bin > /dev/null
+  [[ ! -d "${tools}"/kube-${version}/bin ]] && mkdir -p "${tools}"/kube-${version}/bin
+  pushd "${tools}"/kube-${version}/bin > /dev/null
 
   wget -O kubectl-stash https://github.com/stashed/cli/releases/download/v0.3.1/kubectl-stash-linux-${arch} \
     && chmod +x kubectl-stash
