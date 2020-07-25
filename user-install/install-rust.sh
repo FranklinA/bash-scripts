@@ -1,21 +1,15 @@
-#!/bin/bash
+#!/bin/bash -x
 
 function install_rust_binaries {
-  local version=${1}
-  local version=${version:-stable}
-  if [ "${version}" == "stable" ] ;then
-    local command="update stable"
-  else
-    local command="install ${version}"
-  fi
   local tools="${TOOLS_HOME:=$HOME/tools}"
-  [[ ! -d $tools ]] && mkdir -p $tools
-  [[ ! -d $tools/cargo ]] && mkdir -p $tools/cargo
-  [[ ! -L ~/.cargo ]] && ln -s $tools/cargo ~/.cargo
+  [[ ! -d "${tools}" ]] && mkdir -p "${tools}"
+  [[ ! -d "${tools}"/cargo ]] && mkdir -p "${tools}/cargo"
+  [[ ! -L ~/.cargo ]] && ln -s "${tools}/cargo" ~/.cargo
 
   curl https://sh.rustup.rs -sSf | sh -s -- --no-modify-path -y \
     && source ${HOME}/.cargo/env && hash -r \
-      && rustup ${command} \
+      && rustup default stable && rustup update \
+        && rustup component add clippy rustfmt \
         && rustup component add rust-src
   
   [[ ! -d ~/.bashrc-scripts/installed ]] && mkdir -p ~/.bashrc-scripts/installed
@@ -26,15 +20,18 @@ function __install_rust_cargo_addons {
 cat << EOD
 cargo-watch
 cargo-edit
-cargo-tree
 cargo-udeps
-cargo-audit
+cargo-whatfeatures
+cargo-docset
+cargo-tarpaulin
+cargo-audit --features=fix
+#cargo-deny
 EOD
 }
 
 function install_rust_cargo_addons {
   source ~/.bashrc-scripts/installed/400-rust.sh
-  __install_rust_cargo_addons | xargs echo | xargs cargo install --force
+  __install_rust_cargo_addons | grep -v -E '^#' | while read line ;do cargo install --force ${line} ;done
 }
 
 function install_rust_web {
@@ -55,7 +52,7 @@ EOD
 
 function install_rust_web_addons {
   source ~/.bashrc-scripts/installed/400-rust.sh
-  __install_rust_web_addons || xargs cargo install --force
+  __install_rust_web_addons | grep -v -E '^#' | while read line ;do cargo install --force ${line} ;done
 }
 
 function install_rust_language_server {
@@ -66,11 +63,6 @@ function install_rust_language_server {
 function install_latex_language_server {
   source ~/.bashrc-scripts/installed/400-rust.sh
   cargo install --force --git https://github.com/latex-lsp/texlab.git
-}
-
-function install_rust_docset {
-  source ~/.bashrc-scripts/installed/400-rust.sh
-  cargo install --force cargo-docset
 }
 
 function install_rust {

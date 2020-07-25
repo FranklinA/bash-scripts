@@ -4,6 +4,7 @@
  ##
 ## utilities for simple text transformations
 ##
+
 function upper {
     tr [:lower:] [:upper:] $*
 }
@@ -47,8 +48,50 @@ function mkString {
 }
 
  ##
+## utilities for JSON and YAML processing
+##
+
+function yaml_validate {
+  python -c 'import sys, yaml, json; yaml.safe_load(sys.stdin.read())'
+}
+
+function yaml2json {
+  python -c 'import sys, yaml, json; print(json.dumps(yaml.safe_load(sys.stdin.read())))'
+}
+
+function yaml2json_pretty {
+  python -c 'import sys, yaml, json; print(json.dumps(yaml.safe_load(sys.stdin.read()), indent=2, sort_keys=False))'
+}
+
+function json_validate {
+  python -c 'import sys, yaml, json; json.loads(sys.stdin.read())'
+}
+
+function json2yaml {
+  python -c 'import sys, yaml, json; print(yaml.dump(json.loads(sys.stdin.read()), sort_keys=False))'
+}
+
+function yaml_split {
+  for file in "$@" ;do
+    local dir=$(dirname "${file}")
+    local name=$(basename "${file}" .yaml)
+    csplit --quiet --prefix="${dir}/${name}" --suffix-format='.%03d.yaml.part' --elide-empty-files "${file}" /---/ "{*}"
+    for f in "${dir}/${name}".*.yaml.part ; do
+        local kind=$(cat $f | yaml2json | jq .kind | sed 's/"//g')
+        local count=$(basename "$f" | cut -d. -f 2)
+        local fname=${name}.${count}.${kind}.yaml
+        ## echo "${f} -> ${fname}"
+        tail +2 $f > "${dir}/${fname}"
+        rm $f
+    done
+  done
+}
+
+
+ ##
 ## viewing file differences
 ##
+
 function cdiff {
     diff -Naur $*
 }
@@ -64,250 +107,212 @@ function vdiff {
 
 
  ##
-## finding contents in files easily
+## finding files easily
 ##
-function sources {
-    fgrep -v /.hg/ | fgrep -v /.git/ | fgrep -v /.idea/ $*
+
+function fffile {
+    fd -I $*
 }
 
-function  fffile {
-    find . -type f                      | sources $*
-}
-
-function   ffdir {
-    find . -type d                      | sources $*
+function ffdir {
+    fd -I -t d $*
 }
 
 function ffscala {
-    find . -type f -name "*.scala"      | sources $*
+    fd -I -e scala $*
 }
 
 function ffdhall {
-    find . -type f -name "*.dhall"      | sources $*
+    fd -I -e dhall $*
 }
 
 function  ffjava {
-    find . -type f -name "*.java"       | sources $*
+    fd -I -e java $*
 }
 
 function   ffsbt {
-    find . -type f -name "*.sbt"        | sources $*
+    fd -I -e sbt $*
 }
 
 function   ffxml {
-    find . -type f -name "*.xml"        | sources $*
+    fd -I -e xml $*
 }
 
 function   ffant {
-    find . -type f -name "build.xml"    | sources $*
+    fd -I -e ant $*
 }
 
 function   ffpom {
-    find . -type f -name "pom.xml"      | sources $*
+    fd -I -e pom $*
 }
 
 function   fftxt {
-    find . -type f -name "*.txt"        | sources $*
+    fd -I -e txt $*
 }
 
 function    ffel {
-    find . -type f -name "*.el"         | sources $*
+    fd -I -e el $*
 }
 
 function    ffrs {
-    find . -type f -name "*.rs"         | sources $*
+    fd -I -e rs $*
 }
 
 function    ffpy {
-    find . -type f -name "*.py"         | sources $*
+    fd -I -e py $*
 }
 
 function    ffsh {
-    find . -type f -name "*.sh"         | sources $*
+    fd -I -e sh $*
 }
 
 function    ffmd {
-    find . -type f -name "*.md"         | sources $*
+    fd -I -e md $*
 }
 
 function   ffrst {
-    find . -type f -name "*.rst"        | sources $*
+    fd -I -e rst $*
 }
 
 function    ffts {
-    find . -type f -name "*.ts"         | fgrep -v /node_modules/ | fgrep -v /typings/ | sources $*
+    fd -I -e ts $*
 }
 
 function    ffjs {
-    find . -type f -name "*.js"         | fgrep -v /node_modules/ | fgrep -v /typings/ | sources $*
+    fd -I -e js $*
 }
 
 function  ffjson {
-    find . -type f -name "*.json"       | fgrep -v /node_modules/ | fgrep -v /typings/ | sources $*
+    fd -I -e json $*
 }
 
 function   ffcss {
-    find . -type f -name "*.css"        | sources $*
+    fd -I -e css $*
 }
 
 function  ffform {
-    find . -type f -name "*.form"       | sources $*
+    fd -I -e form $*
 }
 
 function  ffconf {
-    find . -type f -name "*.conf"       | sources $*
+    fd -I -e cfg -e conf -e config -e ini $*
 }
 
-function   ffyml {
-    find . -type f \( -name "*.yml" -o -name "*.yaml" \) | sources $*
-}
-
-function  ffyaml {
-    find . -type f \( -name "*.yml" -o -name "*.yaml" \) | sources $*
+function   ffyaml {
+    fd -I -e yml -e yaml $*
 }
 
 function  fftoml {
-    find . -type f -name "*.toml"       | sources $*
-}
-
-function  ffprop {
-    find . -type f -name "*.properties" | sources $*
-}
-
-function  ffdesc {
-    find . -type f -name "*.descriptor" | sources $*
-}
-
-function  ffprof {
-    find . -type f -name "*.profile"    | sources $*
+    fd -I -e toml $*
 }
 
 function   ffcpp {
-    find . -type f \( -name "*.c" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" \)   | sources $*
+    fd -I -e c -e h -e cpp -e hpp $*
 }
 
 function   ffsql {
-    find . -type f -name "*.sql"        | sources $*
+    fd -I -e sql $*
 }
+
+
+ ##
+## finding contents in files easily
+##
 
 function  fgfile {
-    fffile  | xargs grep -H -n  $*
-}
-
-function   fgdir {
-    ffdir   | xargs grep -H -n  $*
+    rg --no-ignore -H -n $*
 }
 
 function fgscala {
-    ffscala | xargs grep -H -n  $*
+    rg --no-ignore -t scala -H -n $*
 }
 
 function fgdhall {
-    ffdhall | xargs grep -H -n  $*
+    rg --no-ignore -t dhall -H -n $*
 }
 
 function  fgjava {
-    ffjava  | xargs grep -H -n  $*
+    rg --no-ignore -t java -H -n $*
 }
 
 function   fgsbt {
-    ffsbt   | xargs grep -H -n  $*
+    rg --no-ignore -t sbt -H -n $*
 }
 
 function   fgxml {
-    ffxml   | xargs grep -H -n  $*
+    rg --no-ignore -t xml -H -n $*
+}
+
+function   fgant {
+    rg --no-ignore --type-add 'ant:*.ant' -t ant -H -n $*
 }
 
 function   fgpom {
-    ffant   | xargs grep -H -n  $*
-}
-
-function   fgpom {
-    ffpom   | xargs grep -H -n  $*
+    rg --no-ignore --type-add 'pom:*.pom' -t pom -H -n $*
 }
 
 function   fgtxt {
-    fftxt   | xargs grep -H -n  $*
+    rg --no-ignore -t txt -H -n $*
 }
 
 function    fgel {
-    ffel    | xargs grep -H -n  $*
+    rg --no-ignore -t el -H -n $*
 }
 
 function    fgrs {
-    ffrs    | xargs grep -H -n  $*
+    rg --no-ignore -t rs -H -n $*
 }
 
 function    fgpy {
-    ffpy    | xargs grep -H -n  $*
+    rg --no-ignore -t py -H -n $*
 }
 
 function    fgsh {
-    ffsh    | xargs grep -H -n  $*
+    rg --no-ignore -t sh -H -n $*
 }
 
 function    fgmd {
-    ffmd    | xargs grep -H -n  $*
+    rg --no-ignore -t md -H -n $*
 }
 
 function   fgrst {
-    ffrst   | xargs grep -H -n  $*
+    rg --no-ignore -t rst -H -n $*
 }
 
 function    fgts {
-    ffts    | xargs grep -H -n  $*
+    rg --no-ignore -t ts -H -n $*
 }
 
 function    fgjs {
-    ffjs    | xargs grep -H -n  $*
+    rg --no-ignore -t js -H -n $*
 }
 
 function  fgjson {
-    ffjson  | xargs grep -H -n  $*
+    rg --no-ignore -t json -H -n $*
 }
 
 function   fgcss {
-    ffcss   | xargs grep -H -n  $*
-}
-
-function  fgform {
-    ffform  | xargs grep -H -n  $*
+    rg --no-ignore -t css -H -n $*
 }
 
 function  fgconf {
-    ffconf  | xargs grep -H -n  $*
-}
-
-function   fgyml {
-    ffyml   | xargs grep -H -n  $*
+    rg --no-ignore -t config -H -n $*
 }
 
 function  fgyaml {
-    ffyaml  | xargs grep -H -n  $*
+    rg --no-ignore -t yaml -H -n $*
 }
 
 function  fgtoml {
-    fftoml  | xargs grep -H -n  $*
-}
-
-function  fgprop {
-    ffprop  | xargs grep -H -n  $*
-}
-
-function  fgdesc {
-    ffdesc  | xargs grep -H -n  $*
-}
-
-function  fgprof {
-    ffprof  | xargs grep -H -n  $*
+    rg --no-ignore -t toml -H -n $*
 }
 
 function   fgcpp {
-    ffcpp   | xargs grep -H -n  $*
+    rg --no-ignore -t cpp -H -n $*
 }
 
 function   fgsql {
-    ffsql   | xargs grep -H -n  $*
+    rg --no-ignore -t sql -H -n $*
 }
 
 
